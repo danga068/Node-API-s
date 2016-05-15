@@ -1,0 +1,40 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "name": "Milk",
+            "category": "Dairy",
+            "price": 23.4
+        },
+        {
+            "id": 2,
+            "category": "Fruits",
+            "name": "Banana",
+            "price": 34.3
+        },
+        {
+            "id": 3,
+            "category": "Health Care",
+            "name": "Protine Powder",
+            "price": 345.5
+        },
+        {
+            "id": 4,
+            "category": "Fruits",
+            "name": "Apple",
+            "price": 345.5
+        },
+        {
+            "id": 5,
+            "category": "Mobile",
+            "name": "Apple",
+            "price": 345.5
+        },
+        {
+            "name": "HP 230",
+            "category": "Laptop",
+            "price": 34000,
+            "id": 6
+        }
+    ]
+}
