@@ -3,43 +3,26 @@ var should = require('should');
 var assert = require('assert');
 var request = require('supertest'); 
 
-describe('User Authentication', function() {
-	it('Register testing', function(done) {
 
-		var params = {
-			name: "mohan",
-			email: "mohan@gmail.com",
-			password: "mohan@123",
-			confirm_password: "mohan@123"
+describe('Testing Fetch All Product API\'s', function() {
+	it('get products', function(done) {
+
+		var url = "http://127.0.0.1:3000";
+		var headers = {
+			'email': 'ashok@gmail.com',
+			'Content-Type': 'application/json',
+			'access_token': 'ucNPKb3n8bUwFVLwOkWHYS2U0mtUw31B'
 		};
-		
-		var url = "http://127.0.0.1:8081";
+
 		request(url)
-			.post('/register')
-			.send(params)
+			.get('/product/products')
+			.set(headers)
 			.end(function(err, res) {
 				if (err) {
 					throw err;
 				}
 				var result = JSON.parse(res.text);
-				assert.equal(result.success, false, 'validate');
-				done();
-			});
-	});
-});
 
-describe('Product API\'s', function() {
-	it('Fetch Products', function(done) {
-
-		var url = "http://127.0.0.1:8081";
-		request(url)
-			.get('/products')
-			.end(function(err, res) {
-				if (err) {
-					throw err;
-				}
-				var result = JSON.parse(res.text);
-				
 				for (var i =0; i < result.length; i++) {
 					result[i].should.have.property('name');
 					result[i].name.should.be.type('string');
@@ -55,16 +38,19 @@ describe('Product API\'s', function() {
 });
 
 
-describe('Search Products', function() {
+describe('Testing Search API', function() {
 	it('search product', function(done) {
-		var params = {
-			name: "Apple"
-		}
 
-		var url = "http://127.0.0.1:8081";
+		var url = "http://127.0.0.1:3000";
+		var headers = {
+			'email': 'ashok@gmail.com',
+			'Content-Type': 'application/json',
+			'access_token': 'ucNPKb3n8bUwFVLwOkWHYS2U0mtUw31B'
+		};
+
 		request(url)
-			.get('/searchProduct')
-			.send(params)
+			.get('/product/search?name=Apple')
+			.set(headers)
 			.end(function(err, res) {
 				if (err) {
 					throw err;
@@ -87,21 +73,22 @@ describe('Search Products', function() {
 
 
 	it('search category', function(done) {
-		var params = {
-			category: "Fruits"
-		}
 
-		var url = "http://127.0.0.1:8081";
+		var url = "http://127.0.0.1:3000";
+		var headers = {
+			'email': 'ashok@gmail.com',
+			'Content-Type': 'application/json',
+			'access_token': 'ucNPKb3n8bUwFVLwOkWHYS2U0mtUw31B'
+		};
+
 		request(url)
-			.get('/searchProduct')
-			.send(params)
+			.get('/product/search?category=Fruits')
+			.set(headers)
 			.end(function(err, res) {
 				if (err) {
 					throw err;
 				}
 				var result = JSON.parse(res.text);
-				
-				console.log(result);
 				
 				for (var i =0; i < result.length; i++) {
 					result[i].should.have.property('name');
@@ -123,10 +110,16 @@ describe('Search Products', function() {
 			category: "Mobile"
 		}
 
-		var url = "http://127.0.0.1:8081";
+		var url = "http://127.0.0.1:3000";
+		var headers = {
+			'email': 'ashok@gmail.com',
+			'Content-Type': 'application/json',
+			'access_token': 'ucNPKb3n8bUwFVLwOkWHYS2U0mtUw31B'
+		};
+
 		request(url)
-			.get('/searchProduct')
-			.send(params)
+			.get('/product/search')
+			.set(headers)
 			.end(function(err, res) {
 				if (err) {
 					throw err;
