@@ -31,16 +31,16 @@
             "price": 345.5
         },
         {
-            "name": "HP 230",
-            "category": "Laptop",
-            "price": 34000,
-            "id": 6
-        },
-        {
             "name": "Mangoes",
             "category": "Fruits",
-            "price": 55.23,
+            "price": 60.23,
             "id": 7
+        },
+        {
+            "name": "Watermalon",
+            "category": "Fruits",
+            "price": 43.9,
+            "id": 8
         }
     ]
 }

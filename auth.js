@@ -5,12 +5,13 @@ var uid = require('rand-token').uid;
 
 
 router.post('/register', function(req, res) {
-	var name = req.query.name || req.body.name || null;
-	var email = req.query.email || req.body.email || null;
-	var pass = req.query.password || req.body.password || null;
-	var confirmPass = req.query.confirm_password || req.body.confirm_password || null;
+	var name = req.body.name || null;
+	var email = req.body.email || null;
+	var pass = req.body.password || null;
+	var confirmPass = req.body.confirm_password || null;
 
 	result = {
+		code: 200,
 		success: true,
 		access_token: null,
 		message: "Account created successfully",
@@ -18,6 +19,7 @@ router.post('/register', function(req, res) {
 	}
 
 	if(!email || !pass || !confirmPass) {
+		result.code = 401;
 		result.success = false;
 		result.message = "Invalid email or password";
 		res.end(JSON.stringify(result));
@@ -25,6 +27,7 @@ router.post('/register', function(req, res) {
 	}
 
 	if(pass !== confirmPass) {
+		result.code = 401;
 		result.success = false;
 		result.message = "confirm password not matched with password";
 		res.end(JSON.stringify(result));
@@ -36,6 +39,7 @@ router.post('/register', function(req, res) {
 
 	for (var i = 0; i < data.users.length; i++) {
 		if( data.users[i].email === email) {
+			result.code = 409;
 			result.success = false;
 			result.message = "user already exist";
 			res.end(JSON.stringify(result));
@@ -65,17 +69,19 @@ router.post('/register', function(req, res) {
 	return result;
 });	
 
-router.get('/login', function(req, res) {
-	var email = req.query.email || null;
-	var pass = req.query.password || null;
+router.post('/login', function(req, res) {
+	var email = req.body.email || null;
+	var pass = req.body.password || null;
 
 	var result = {
+		code: 200,
 		success: true,
 		message: "Login successful",
 		access_token: null
 	}
 
 	if (!email || !pass) {
+		result.code = 401;
 		result.success = false;
 		result.message = "Invalid username/password";
 		res.end(JSON.stringify(result));
@@ -94,16 +100,18 @@ router.get('/login', function(req, res) {
 			} else {
 				result.access_token = data.users[i].access_token;
 				result.success = false;
+				result.code = 409;
 				result.message = "You are already Login";
 			}
 			isUserExist = true;
-			
 			break;
 		}
 	}
 
 	if (!isUserExist) {
-		result.message = "user not exist";
+		result.code = 404;
+		result.success = false;
+		result.message = "Invalid username/password";
 	} 
 
 	res.end(JSON.stringify(result));
@@ -111,16 +119,18 @@ router.get('/login', function(req, res) {
 	return result;
 });
 
-router.get('/logout', function(req, res) {
-	var email = req.query.email;
-	var access_token = req.query.access_token;
+router.post('/logout', function(req, res) {
+	var email = req.headers.email || null;
+	var access_token = req.headers.access_token || null;
 
 	result = {
+		code: 200,
 		success: true,
 		message: "logout successfully"
 	}
 
 	if(!email || !access_token) {
+		result.code = 401;
 		result.success = false;
 		result.message = "email/access_token not found";
 		res.end(JSON.stringify(result));
@@ -140,12 +150,13 @@ router.get('/logout', function(req, res) {
 	}
 
 	if (!isCredentialExist) {
+		result.code = 401;
 		result.success = false;
 		result.message = "Wrong credentional";
 	}
 
 	res.end(JSON.stringify(result));
-	fs.writeFileSync('./credential.json', JSON.stringify(data, null, 10));
+	fs.writeFileSync('./credential.json', JSON.stringify(data, null, 4));
 	return result;
 });
 
